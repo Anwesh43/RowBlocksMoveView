@@ -26,20 +26,20 @@ fun Int.inverse() : Float = 1f / this
 fun Float.maxScale(i : Int, n : Int) : Float = Math.max(0f, this - i * n.inverse())
 fun Float.divideScale(i : Int, n : Int) : Float = Math.min(n.inverse(), maxScale(i, n)) * n
 
-fun Canvas.drawRowBlock(i : Int, sc : Float, size : Float, xGap : Float, paint : Paint) {
+fun Canvas.drawRowBlock(i : Int, sc : Float, size : Float, xGap : Float, gap : Float, paint : Paint) {
     val sci : Float = sc.divideScale(i, blocks)
     save()
-    translate(xGap * (i + 1), 0f)
+    translate(xGap * (i + 1), gap * sci)
     rotate(90f * sci)
     drawRect(RectF(-size, -size, size, size), paint)
     restore()
 }
 
-fun Canvas.drawRowBlock(scale : Float, hSize : Float, w : Float, paint : Paint) {
+fun Canvas.drawRowBlock(scale : Float, gap : Float, hSize : Float, w : Float, paint : Paint) {
     val xGap : Float = w / (blocks + 1)
     val size : Float = Math.min(hSize, xGap / sizeFactor)
     for (j in 0..(blocks - 1)) {
-        drawRowBlock(j, scale, size, xGap, paint)
+        drawRowBlock(j, scale, size, xGap, gap, paint)
     }
 }
 
@@ -53,7 +53,7 @@ fun Canvas.drawRBMNode(i : Int, scale : Float, paint : Paint) {
     paint.strokeWidth = Math.min(w, h) / strokeFactor
     save()
     translate(0f, gap * (i + 1))
-    drawRowBlock(scale, size, w, paint)
+    drawRowBlock(scale, gap, size, w, paint)
     restore()
 }
 
