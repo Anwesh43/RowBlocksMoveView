@@ -25,3 +25,34 @@ val delay : Long = 20
 fun Int.inverse() : Float = 1f / this
 fun Float.maxScale(i : Int, n : Int) : Float = Math.max(0f, this - i * n.inverse())
 fun Float.divideScale(i : Int, n : Int) : Float = Math.min(n.inverse(), maxScale(i, n)) * n
+
+fun Canvas.drawRowBlock(i : Int, sc : Float, size : Float, xGap : Float, paint : Paint) {
+    val sci : Float = sc.divideScale(i, blocks)
+    save()
+    translate(xGap * (i + 1), 0f)
+    rotate(90f * sci)
+    drawRect(RectF(-size, -size, size, size), paint)
+    restore()
+}
+
+fun Canvas.drawRowBlock(scale : Float, hSize : Float, w : Float, paint : Paint) {
+    val xGap : Float = w / (blocks + 1)
+    val size : Float = Math.min(hSize, xGap / sizeFactor)
+    for (j in 0..(blocks - 1)) {
+        drawRowBlock(j, scale, size, xGap, paint)
+    }
+}
+
+fun Canvas.drawRBMNode(i : Int, scale : Float, paint : Paint) {
+    val w : Float = width.toFloat()
+    val h : Float = height.toFloat()
+    val gap : Float = h / (nodes + 1)
+    val size : Float = gap / sizeFactor
+    paint.color = foreColor
+    paint.strokeCap = Paint.Cap.ROUND
+    paint.strokeWidth = Math.min(w, h) / strokeFactor
+    save()
+    translate(0f, gap * (i + 1))
+    drawRowBlock(scale, size, w, paint)
+    restore()
+}
