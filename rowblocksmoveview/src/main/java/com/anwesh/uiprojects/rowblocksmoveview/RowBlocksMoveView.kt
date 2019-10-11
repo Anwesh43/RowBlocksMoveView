@@ -185,4 +185,26 @@ class RowBlocksMoveView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : RowBlocksMoveView) {
+
+        private val animator : Animator = Animator(view)
+        private val rbm : RowBlocksMove = RowBlocksMove(0)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(backColor)
+            rbm.draw(canvas, paint)
+            animator.animate {
+                rbm.update {
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            rbm.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
