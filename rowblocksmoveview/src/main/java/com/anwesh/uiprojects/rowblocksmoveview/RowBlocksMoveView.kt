@@ -208,4 +208,13 @@ class RowBlocksMoveView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity : Activity) : RowBlocksMoveView {
+            val view : RowBlocksMoveView = RowBlocksMoveView(activity)
+            activity.setContentView(view)
+            return view
+        }
+    }
 }
